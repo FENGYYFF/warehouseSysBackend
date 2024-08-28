@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wmsdemo.mapper.RecordMapper">
+
+    <select id="pageCC" resultType="com.wmsdemo.entity.RecordResponse">
+        select a.*, b.name goodsname, c.name storagename, d.name goodstypename,
+        (select u.name from user u where u.id = a.userid) as username,
+        (select u.name from user u where u.id = a.admin_id) as adminname
+        from record a
+        join goods b on a.goods = b.id
+        join storage c on b.storage = c.id
+        join goodsType d on b.goodsType = d.id
+        ${ew.customSqlSegment}
+    </select>
+
+    <sql id="Base_Column_List">
+        id, goods, userId, admin_id, count, createtime, remark
+    </sql>
+
+</mapper>
